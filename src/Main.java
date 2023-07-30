@@ -16,7 +16,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("\n== Olá! Seja bem-vindo(a) à lanchonete Bigodon's ==");
-        System.out.println("Insira uma das opções abaixo: ");
+        System.out.println("Insira uma das opções abaixo: \n");
 
         int opcao = 0;
         do {
@@ -24,9 +24,9 @@ public class Main {
             System.out.println("2 - Exibir quantidade de pedidos");
             System.out.println("3 - Exibir pedidos encerrados");
             System.out.println("4 - Exibir pedidos em atendimento");
-            System.out.println("5 - Exibir Clientes");
-            System.out.println("6 - Sair");
-            opcao = scanner.nextInt();
+            System.out.println("5 - Exibir clientes e pedidos/Alterar status do pedido");
+            System.out.println("6 - Sair\n");
+            System.out.print("Digite a opção: "); opcao = scanner.nextInt();
 
             switch (opcao) {
                 case 1:
@@ -42,6 +42,7 @@ public class Main {
                     break;
 
                 case 4:
+                    cliente.pedidosEmProducao(cliente.getPedidos(),cliente.clientes);
                     break;
 
                 case 5:
