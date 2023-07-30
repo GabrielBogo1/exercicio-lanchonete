@@ -147,6 +147,8 @@ do {
                 verificaFinalizados = true;
 
                 System.out.println("");
+                System.out.println("teste");
+                System.out.println("tesntad");
             }
         }
 
