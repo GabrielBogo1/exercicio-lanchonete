@@ -1,3 +1,8 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,6 +20,7 @@ public class Cliente {
     int emAndamentoTotais = 0;
 
     Scanner scanner = new Scanner(System.in);
+
 
 
     public Cliente(String nome, List<Endereco> enderecos) {
@@ -82,10 +88,19 @@ public class Cliente {
             }
         } while (pedidoOpcao > 3);
 
-        System.out.println("Por último, digite o nº do pedido: ");
-        int numPedido = scanner.nextInt();
+            boolean verificaNum = false;
 
-        System.out.println("Pedido realizado com sucesso, muito obrigado!");
+            System.out.println("Por último, digite o nº do pedido: ");
+             int numPedido = scanner.nextInt();
+            for (int i = 0; i < pedidos.size(); i++) {
+                if (numPedido == pedidos.get(i).getNumPedido()) {
+                    System.out.println("Digite outro número, pedido já existente");
+                    verificaNum = true;
+                }
+            }
+            if (!verificaNum){
+            System.out.println("Pedido realizado com sucesso, muito obrigado!");
+        }
 
         Pedido pedido = new Pedido(nomePedido, numPedido, false, false);
         pedidos.add(pedido);
@@ -168,6 +183,7 @@ public class Cliente {
                                 pedidos.get(i).setAtivo(false);
                                 pedidos.get(i).setFinalizado(true);
                                 verificaFinalizado = true;
+                                salvarFinalizados(pedidos,clientes,enderecos);
                             }
                         }
                         if (!verificaFinalizado) {
@@ -260,6 +276,34 @@ public class Cliente {
         }
     }
 
+    public void salvarFinalizados(List<Pedido> pedidos, List<Cliente> clientes, List <Endereco> enderecos) {
+
+        String pastaArquivos = "C:\\Users\\55459\\OneDrive\\Área de Trabalho\\arquivo-txt-java\\";
+
+        try {
+            for (int i = 0; i < pedidos.size(); i++) {
+                String nomeArquivo = pastaArquivos + "pedido_" + pedidos.get(i).getNumPedido() + ".txt";
+                BufferedWriter escreverArquivo = new BufferedWriter(new FileWriter(nomeArquivo));
+                    escreverArquivo.write("Pedido nº: " + pedidos.get(i).getNumPedido());
+                    escreverArquivo.newLine();
+                    escreverArquivo.write("Descrição do pedido: " + pedidos.get(i).getNomePedido());
+                    escreverArquivo.newLine();
+                    escreverArquivo.write("Nome do cliente: " + clientes.get(i).getNome());
+                    escreverArquivo.newLine();
+                    escreverArquivo.write("Rua: " + enderecos.get(i).getRua());
+                    escreverArquivo.newLine();
+                    escreverArquivo.write("Bairro: " + enderecos.get(i).getBairro());
+                    escreverArquivo.newLine();
+                    escreverArquivo.write("Nº casa: " + enderecos.get(i).getNumero());
+
+                    escreverArquivo.close();
+            }
+            System.out.println("Relatório do pedido criado!");
+        } catch (IOException e) {
+            System.err.println("Erro ao gerar relatório: " + e.getMessage());
+        }
+    }
+
 
     public List<Pedido> getPedidos() {
         return pedidos;
@@ -287,4 +331,5 @@ public class Cliente {
     public void setEnderecos(List<Endereco> enderecos) {
         this.enderecos = enderecos;
     }
+
 }
